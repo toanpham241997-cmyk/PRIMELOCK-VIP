@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>nThông Báo Hệ Thống</title>
+  <title>Thông Báo Hệ Thống</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
 
@@ -428,6 +428,166 @@
       100% { transform: translate(-50%, -50%) scale(2.4); opacity: 0;   }
     }
 
+    /* ────────────────────────────────────────
+       Link copy frames
+    ──────────────────────────────────────── */
+    .link-frames {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .link-frame {
+      width: 100%;
+      border-radius: 14px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .link-frame-download {
+      background: linear-gradient(135deg, rgba(0, 30, 16, 0.95) 0%, rgba(0, 20, 10, 0.98) 100%);
+      border: 1.5px solid rgba(0, 200, 120, 0.38);
+      box-shadow:
+        0 0 0 1px rgba(0, 200, 120, 0.06),
+        0 4px 24px rgba(0, 180, 100, 0.14),
+        inset 0 1px 0 rgba(0, 255, 140, 0.08);
+    }
+
+    .link-frame-tiktok {
+      background: linear-gradient(135deg, rgba(20, 5, 10, 0.95) 0%, rgba(12, 4, 8, 0.98) 100%);
+      border: 1.5px solid rgba(255, 0, 80, 0.38);
+      box-shadow:
+        0 0 0 1px rgba(255, 0, 80, 0.06),
+        0 4px 24px rgba(255, 0, 80, 0.13),
+        inset 0 1px 0 rgba(255, 80, 120, 0.08);
+    }
+
+    .link-frame-icon {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .link-frame-download .link-frame-icon {
+      background: rgba(0, 200, 120, 0.12);
+      border: 1px solid rgba(0, 200, 120, 0.22);
+    }
+
+    .link-frame-tiktok .link-frame-icon {
+      background: rgba(255, 0, 80, 0.12);
+      border: 1px solid rgba(255, 0, 80, 0.22);
+    }
+
+    .link-frame-body {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .link-frame-title {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .link-frame-download .link-frame-title { color: #00c878; }
+    .link-frame-tiktok   .link-frame-title { color: #ff4070; }
+
+    .link-frame-input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      outline: none;
+      font-family: 'Inter', sans-serif;
+      font-size: 11.5px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.65);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      cursor: default;
+      caret-color: transparent;
+      user-select: none;
+      -webkit-user-select: none;
+      pointer-events: none;
+      padding: 0;
+      letter-spacing: 0.01em;
+    }
+
+    .link-copy-btn {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+      position: relative;
+      background: transparent;
+    }
+
+    .link-frame-download .link-copy-btn {
+      background: rgba(0, 200, 120, 0.13);
+      border: 1px solid rgba(0, 200, 120, 0.25);
+    }
+    .link-frame-download .link-copy-btn:hover {
+      background: rgba(0, 200, 120, 0.24);
+      transform: scale(1.1);
+    }
+    .link-frame-download .link-copy-btn:active {
+      transform: scale(0.92);
+    }
+
+    .link-frame-tiktok .link-copy-btn {
+      background: rgba(255, 0, 80, 0.13);
+      border: 1px solid rgba(255, 0, 80, 0.25);
+    }
+    .link-frame-tiktok .link-copy-btn:hover {
+      background: rgba(255, 0, 80, 0.24);
+      transform: scale(1.1);
+    }
+    .link-frame-tiktok .link-copy-btn:active {
+      transform: scale(0.92);
+    }
+
+    /* Checkmark that appears after copy */
+    .link-copy-btn .icon-copy,
+    .link-copy-btn .icon-check {
+      position: absolute;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .link-copy-btn .icon-check {
+      opacity: 0;
+      transform: scale(0.6);
+    }
+
+    .link-copy-btn.copied .icon-copy {
+      opacity: 0;
+      transform: scale(0.6);
+    }
+
+    .link-copy-btn.copied .icon-check {
+      opacity: 1;
+      transform: scale(1);
+    }
+
     /* Toast notification */
     .toast {
       position: fixed;
@@ -526,6 +686,69 @@
     />
     <div class="img-overlay"></div>
     <div class="img-label">Super Hitlock — Hệ thống bảo vệ cao cấp</div>
+  </div>
+
+  <!-- ── Link copy frames ── -->
+  <div class="link-frames">
+
+    <!-- Download link -->
+    <div class="link-frame link-frame-download">
+      <div class="link-frame-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M12 3v13" stroke="#00c878" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M7 13l5 5 5-5" stroke="#00c878" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M5 20h14" stroke="#00c878" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="link-frame-body">
+        <span class="link-frame-title">Link Tải Super Hitlock</span>
+        <input
+          class="link-frame-input"
+          id="inputDownload"
+          type="text"
+          readonly
+          value="https://www.mediafire.com/file/sfux1w7t293r7gl/HITLOCK+SUPER.zip/file"
+        />
+      </div>
+      <button class="link-copy-btn" id="copyDownload" aria-label="Sao chép link tải">
+        <svg class="icon-copy" width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <rect x="9" y="9" width="13" height="13" rx="3" stroke="#00c878" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="#00c878" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <svg class="icon-check" width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M5 12l5 5L19 7" stroke="#00c878" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- TikTok link -->
+    <div class="link-frame link-frame-tiktok">
+      <div class="link-frame-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.26 6.26 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34v-7.3a8.16 8.16 0 0 0 4.77 1.52V6.07a4.85 4.85 0 0 1-1-.38Z" fill="#ff4070"/>
+        </svg>
+      </div>
+      <div class="link-frame-body">
+        <span class="link-frame-title">Link TikTok</span>
+        <input
+          class="link-frame-input"
+          id="inputTiktok"
+          type="text"
+          readonly
+          value="https://www.tiktok.com/@havanhuanvn_love"
+        />
+      </div>
+      <button class="link-copy-btn" id="copyTiktok" aria-label="Sao chép link TikTok">
+        <svg class="icon-copy" width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <rect x="9" y="9" width="13" height="13" rx="3" stroke="#ff4070" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="#ff4070" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <svg class="icon-check" width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M5 12l5 5L19 7" stroke="#ff4070" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+
   </div>
 
   <!-- ── Round Buttons ── -->
@@ -785,6 +1008,46 @@ function showToast(msg) {
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
 }
+
+/* ══════════════════════════════════════════════════════════
+   COPY LINK — nút copy bên phải edittext
+══════════════════════════════════════════════════════════ */
+function copyLink(btnId, inputId, label) {
+  const btn   = document.getElementById(btnId);
+  const input = document.getElementById(inputId);
+  const text  = input.value;
+
+  navigator.clipboard.writeText(text).then(() => {
+    btn.classList.add('copied');
+    showToast('✅  Đã sao chép ' + label);
+    setTimeout(() => btn.classList.remove('copied'), 2000);
+  }).catch(() => {
+    /* Fallback cho trình duyệt cũ không có clipboard API */
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0;';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try {
+      document.execCommand('copy');
+      btn.classList.add('copied');
+      showToast('✅  Đã sao chép ' + label);
+      setTimeout(() => btn.classList.remove('copied'), 2000);
+    } catch (err) {
+      showToast('⚠️  Không thể sao chép, vui lòng copy thủ công');
+    }
+    document.body.removeChild(ta);
+  });
+}
+
+document.getElementById('copyDownload').addEventListener('click', () => {
+  copyLink('copyDownload', 'inputDownload', 'link tải Hitlock');
+});
+
+document.getElementById('copyTiktok').addEventListener('click', () => {
+  copyLink('copyTiktok', 'inputTiktok', 'link TikTok');
+});
 
 /* ══════════════════════════════════════════════════════════
    NAVIGATE — mở link trực tiếp trên trình duyệt hiện tại
