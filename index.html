@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thông Báo Hệ Thống</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
 
@@ -520,11 +521,11 @@
   <!-- Image frame -->
   <div class="frame-image">
     <img
-      src="https://sf-static.upanhlaylink.com/img/image_202605125780d3916175990d22ad495f95b57b27.jpg"
+      src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1600&auto=format&fit=crop"
       alt="Super Hitlock Banner"
     />
     <div class="img-overlay"></div>
-    <div class="img-label">Hà Văn Huấn </div>
+    <div class="img-label">Super Hitlock — Hệ thống bảo vệ cao cấp</div>
   </div>
 
   <!-- ── Round Buttons ── -->
@@ -545,7 +546,7 @@
           </svg>
         </div>
       </button>
-      <span class="btn-label btn-label-download">Tải<br>Super Hitlock</span>
+      <span class="btn-label btn-label-download">Tải<br>Hitlock</span>
     </div>
 
     <!-- TikTok button -->
@@ -573,10 +574,10 @@
 
 <script>
 /* ══════════════════════════════════════════════════════════
-   CONFIG — chỉnh link tại đây
+   CONFIG
 ══════════════════════════════════════════════════════════ */
-const DOWNLOAD_URL = '#';           // thay bằng link tải thật của bạn
-const TIKTOK_URL   = 'https://www.tiktok.com'; // thay bằng link TikTok của bạn
+const DOWNLOAD_URL = 'https://www.mediafire.com/file/sfux1w7t293r7gl/HITLOCK+SUPER.zip/file';
+const TIKTOK_URL   = 'https://www.tiktok.com/@havanhuanvn_love?_r=1&_t=ZS-96IY3zl2hDr';
 
 /* ══════════════════════════════════════════════════════════
    PARTICLE ENGINE
@@ -786,6 +787,15 @@ function showToast(msg) {
 }
 
 /* ══════════════════════════════════════════════════════════
+   NAVIGATE — mở link trực tiếp trên trình duyệt hiện tại
+   Dùng location.href để Safari/Chrome mở luôn, không bị chặn popup
+══════════════════════════════════════════════════════════ */
+function goTo(url) {
+  /* Thử deep-link app trước (TikTok), nếu không thì dùng href */
+  window.location.href = url;
+}
+
+/* ══════════════════════════════════════════════════════════
    CLICK — Download button
 ══════════════════════════════════════════════════════════ */
 document.getElementById('btnDownload').addEventListener('click', (e) => {
@@ -793,20 +803,17 @@ document.getElementById('btnDownload').addEventListener('click', (e) => {
   psDownload.setActive(true);
   psDownload.burst();
   triggerRipple('rippleDownload');
-  showToast('⬇️  Đang chuyển hướng tải Super Hitlock...');
+  showToast('⬇️  Đang mở trang tải Super Hitlock...');
 
   setTimeout(() => {
-    if (DOWNLOAD_URL && DOWNLOAD_URL !== '#') {
-      window.open(DOWNLOAD_URL, 'https://www.mediafire.com/file/sfux1w7t293r7gl/HITLOCK+SUPER.zip/file');
-    } else {
-      showToast('⚠️  Chưa có link tải — vui lòng liên hệ Admin');
-    }
     psDownload.setActive(false);
-  }, 700);
+    goTo(DOWNLOAD_URL);
+  }, 600);
 });
 
 /* ══════════════════════════════════════════════════════════
    CLICK — TikTok button
+   Thử deep-link vào app TikTok trước, sau đó fallback trình duyệt
 ══════════════════════════════════════════════════════════ */
 document.getElementById('btnTiktok').addEventListener('click', (e) => {
   e.preventDefault();
@@ -816,9 +823,33 @@ document.getElementById('btnTiktok').addEventListener('click', (e) => {
   showToast('🎵  Đang mở TikTok...');
 
   setTimeout(() => {
-    window.open(TIKTOK_URL, 'https://www.tiktok.com/@havanhuanvn_love?_r=1&_t=ZS-96IXOtZz7CS');
     psTiktok.setActive(false);
-  }, 600);
+
+    /* Deep-link scheme — nếu app TikTok cài rồi sẽ mở thẳng vào app */
+    const username   = 'havanhuanvn_love';
+    const deepLink   = `tiktok://user?username=${username}`;
+    const webFallback = TIKTOK_URL;
+
+    /* Tạo iframe ẩn để thử deep-link; nếu sau 1.5s chưa rời trang thì dùng web */
+    const iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    document.body.appendChild(iframe);
+
+    let left = true;
+    const blurHandler = () => { left = false; };
+    window.addEventListener('blur', blurHandler, { once: true });
+
+    iframe.src = deepLink;
+
+    setTimeout(() => {
+      window.removeEventListener('blur', blurHandler);
+      document.body.removeChild(iframe);
+      if (left) {
+        /* App chưa mở được → mở trình duyệt */
+        goTo(webFallback);
+      }
+    }, 1500);
+  }, 500);
 });
 </script>
 </body>
